@@ -29,20 +29,20 @@ class GuessTest < Minitest::Test
     assert guess.correct?
   end
 
-  def test_guess_correct_returns_false_if_response_does_not_match_answer
-    card = Card.new("What is the capital of Alaska?", "Juneau")
-    guess = Guess.new("Nebraska", card)
-
-    refute guess.correct?
-  end
-
   def test_guess_feedback_returns_correct_when_response_is_correct
     assert "Correct!", guess.feedback
   end
 
+  def test_guess_correct_returns_false_if_response_does_not_match_answer
+    card = Card.new("Which planet is closest to the sun?", "Mercury")
+    guess = Guess.new("Saturn", card)
+
+    refute guess.correct?
+  end
+
   def test_guess_feedback_returns_incorrect_when_response_is_incorrect
-    card = Card.new("What is the capital of Alaska?", "Juneau")
-    guess = Guess.new("Nebraska", card)
+    card = Card.new("Which planet is closest to the sun?", "Mercury")
+    guess = Guess.new("Saturn", card)
 
     assert_equal "Incorrect!", guess.feedback
   end
