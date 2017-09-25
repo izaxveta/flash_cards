@@ -2,11 +2,13 @@ require './lib/guess'
 
 class Round
   attr_reader :deck,
-              :guesses
+              :guesses,
+              :card_count
 
   def initialize(deck)
     @deck = deck
     @guesses = []
+    @card_count = deck.cards.length
   end
 
   def current_card
@@ -31,22 +33,21 @@ class Round
     flash_card
   end
 
-  def divider
-    puts "======================================================================\n\n".center(70)
+  def flash_card
+    play = 0
+      until deck.cards.empty? do
+        play += 1
+        divider
+        puts "This is card number #{play} out of #{card_count}.".center(70)
+        puts "Question: #{current_card.question}".center(70)
+        get_input
+        record_guess(@input)
+        puts guesses.last.feedback.center(70)
+      end
+    end_game
   end
 
-  def flash_card
-    card_count = deck.cards.length
-    play = 0
-    until deck.cards.empty? do
-      play += 1
-      divider
-      puts "This is card number #{play} out of #{card_count}.".center(70)
-      puts "Question: #{current_card.question}".center(70)
-      get_input
-      record_guess(@input)
-      puts guesses.last.feedback.center(70)
-    end
+  def end_game
     divider
     puts "««« GAME OVER! »»»\n".center(70)
     puts "You had #{number_correct} out of #{card_count} for a score of #{percent_correct}%.\n".center(70)
@@ -54,5 +55,9 @@ class Round
 
   def get_input
     @input = gets.chomp
+  end
+
+  def divider
+    puts "======================================================================\n\n".center(70)
   end
 end
